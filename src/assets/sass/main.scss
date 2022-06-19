@@ -1,0 +1,126 @@
+@import './fonts.scss';
+
+html,
+body {
+  font-family: 'Poppins-Regular';
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+canvas {
+  outline: none;
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+a {
+  all: unset;
+}
+
+.link {
+  color: #0099ff;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.9);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  0% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.anim-pulse {
+  animation: pulse 0.3s linear;
+}
+
+.anim-pulse-on-hover {
+  &:hover {
+    animation: pulse 0.3s linear;
+  }
+}
+
+.anim-fade {
+  &-in {
+    animation: fade-in 0.3s linear;
+  }
+
+  &-out {
+    animation: fade-out 0.3s linear;
+  }
+}
+
+.lds-ring {
+  display: inline-block;
+  position: relative;
+  width: 80px;
+  height: 80px;
+}
+
+.lds-ring div {
+  box-sizing: border-box;
+  display: block;
+  position: absolute;
+  width: 64px;
+  height: 64px;
+  margin: 8px;
+  border: 8px solid #fff;
+  border-radius: 50%;
+  animation: lds-ring 1.2s cubic-bezier(0.5, 0, 0.5, 1) infinite;
+  border-color: #fff transparent transparent transparent;
+}
+
+.lds-ring div:nth-child(1) {
+  animation-delay: -0.45s;
+}
+
+.lds-ring div:nth-child(2) {
+  animation-delay: -0.3s;
+}
+
+.lds-ring div:nth-child(3) {
+  animation-delay: -0.15s;
+}
+
+@keyframes lds-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
