@@ -1,0 +1,30 @@
+@import './fonts.scss';
+
+html,
+body {
+  font-family: 'Poppins-Regular';
+  padding: 0;
+  margin: 0;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+canvas {
+  outline: none;
+  margin: 0;
+  height: 100vh;
+  width: 100%;
+}
+
+a {
+  all: unset;
+}
+
+.link {
+  color: #0099ff;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+  }
+}
