@@ -4,15 +4,16 @@ import {
   Box,
   Button, ButtonGroup, Grid,
 } from "@mui/material";
-import AddObjectModalVisible from "components/AddObjectModalVisible";
+import AddObjectModal from "components/AddObjectModal";
 import Text from "components/Text";
+import { useMode, useVocselApi } from "store/store";
 
 const StyledTopMenu = styled.div`
   position: absolute;
   z-index: 1;
   width: 100%;
   height: 50px;
-  backdrop-filter: blur(4px) brightness(160%);
+  backdrop-filter: blur(20px) brightness(160%);
 `;
 
 const StyledGrid = styled(Grid)`
@@ -20,12 +21,13 @@ const StyledGrid = styled(Grid)`
 `;
 
 const TopMenu = () => {
-  const [mode, setMode] = useState("edit");
+  const [mode, setMode] = useMode();
   const [addObjectModalVisible, setAddObjectModalVisible] = useState(false);
+  const [vocselApi, _] = useVocselApi();
 
   return (
     <StyledTopMenu>
-      <AddObjectModalVisible
+      <AddObjectModal
         open={addObjectModalVisible}
         onClose={() => setAddObjectModalVisible(false)}
       />
@@ -42,11 +44,22 @@ const TopMenu = () => {
                   pl: 1,
                 }}
                 >
+                  <Box sx={{ pr: 1 }}>
+                    <Button
+                      variant="contained"
+                      onClick={() => setAddObjectModalVisible(true)}
+                    >
+                      Add Item
+                    </Button>
+                  </Box>
+
                   <Button
                     variant="contained"
-                    onClick={() => setAddObjectModalVisible(true)}
+                    onClick={async () => {
+                      (await vocselApi?.db.document("item"))?.flush().then(() => window.location.reload());
+                    }}
                   >
-                    Add Item
+                    Clear All
                   </Button>
                 </Box>
               ) : null
@@ -64,13 +77,15 @@ const TopMenu = () => {
           >
             <ButtonGroup aria-label="outlined primary button group">
               <Button
-                variant={mode === "edit" ? "contained" : "outlined"}
+                variant="contained"
+                color={mode === "edit" ? "primary" : "info"}
                 onClick={() => setMode("edit")}
               >
                 <Text size="sm" color="#fff">Edit</Text>
               </Button>
               <Button
-                variant={mode === "preview" ? "contained" : "outlined"}
+                variant="contained"
+                color={mode === "preview" ? "primary" : "info"}
                 onClick={() => setMode("preview")}
               >
                 <Text size="sm" color="#fff">Preview</Text>

@@ -1,28 +1,49 @@
-import React, { useEffect } from "react";
-import MountPoint from "lib/mount-point";
-import { SceneLoader } from "@babylonjs/core";
+import React, { useEffect, useState } from "react";
+import Renderer from "lib/3d/renderer.babylon";
+import { useActiveItem, useItems } from "store/store";
 
 const Canvas = () => {
+  const [items] = useItems();
+  const [renderer, setRenderer] = useState<Renderer>();
+
+  let canvas: HTMLCanvasElement;
+
   useEffect(() => {
-    const canvas = document.querySelector("canvas") as HTMLCanvasElement;
+    canvas = document.querySelector("canvas") as HTMLCanvasElement;
 
-    const mountPoint = new MountPoint(canvas);
-    mountPoint.mount();
-
-    // Create a default skybox with an environment.
-    // const hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("textures/environment.dds", scene);
-    // const currentSkybox = scene.createDefaultSkybox(hdrTexture, true);
-
-    // Append glTF model to scene.
-    SceneLoader.ImportMesh("", "assets/meshes/", "yellow_brick_4k.gltf", mountPoint.scene, (scene) => {
-      // Create a default arc rotate camera and light.
-      // scene.createDefaultCameraOrLight(true, true, true);
-
-      // The default camera looks at the back of the asset.
-      // Rotate the camera by 180 degrees to the front of the asset.
-      // scene.activeCamera.alpha += Math.PI;
-    });
+    const r = Renderer.shared();
+    r.init(canvas);
+    r.run();
+    setRenderer(r);
   }, []);
+
+  useEffect(() => {
+    async function importMeshes() {
+      if (items.length && renderer) {
+        await Promise.all(
+          items.map(async ({ file: { sharedLink } }, i): Promise<void> => {
+            const node = await renderer.importMesh(sharedLink);
+            items[i].node = node.meshes[0];
+            // items[i].node.position.z = 2;
+
+            if (i > 0) {
+              items[i].node.setEnabled(false);
+            }
+          }),
+        );
+
+        // renderer.scene.rootNodes.slice(-1)[0].position.z = -5;
+        // renderer.scene.rootNodes.slice(-1)[0].isPickable = true;
+        // renderer.scene.onPointerDown = function (evt, pickResult) {
+        //   if (pickResult.hit) {
+        //     meshes[1].meshes.forEach((m) => m.dispose());
+        //   }
+        // };
+      }
+    }
+
+    importMeshes();
+  }, [items]);
 
   return (
     <canvas />

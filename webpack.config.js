@@ -19,15 +19,18 @@ function plugins() {
       template: path.resolve(__dirname, "src", "index.html"),
     }),
     new webpack.HotModuleReplacementPlugin(),
-    new CopyPlugin({
-      patterns: [
-        // { from: path.resolve(__dirname, "src/assets/icons"), to: path.resolve(__dirname, "__dist__/assets/icons") },
-        // { from: path.resolve(__dirname, "src/assets/images"), to: path.resolve(__dirname, "__dist__/assets/images") },
-        { from: path.resolve(__dirname, "src/assets/meshes"), to: path.resolve(__dirname, "__dist__/assets/meshes") },
-      ],
-    }),
+    // new CopyPlugin({
+    //   patterns: [
+    //     { from: path.resolve(__dirname, "src/assets/icons"), to: path.resolve(__dirname, "__dist__/assets/icons") },
+    //     { from: path.resolve(__dirname, "src/assets/images"), to: path.resolve(__dirname, "__dist__/assets/images") },
+    //     { from: path.resolve(__dirname, "src/assets/meshes"), to: path.resolve(__dirname, "__dist__") },
+    //   ],
+    // }),
     new MomentLocalesPlugin({
       localesToKeep: ["es-us", "ru"],
+    }),
+    new webpack.ProvidePlugin({
+      process: "process/browser",
     }),
   ];
 
@@ -38,6 +41,7 @@ function plugins() {
   if (mode === "production") {
     const envs = fs.readFileSync(".env", "utf-8")
       .split("\n")
+      .filter((line) => line.trim() && !line.startsWith("#"))
       .map((line) => line.split("=")[0]);
 
     list = [...list, new webpack.EnvironmentPlugin(envs)];
@@ -100,7 +104,7 @@ module.exports = {
             loader: "file-loader",
             options: {
               name: "[name].[ext]",
-              outputPath: "assets/fonts/",
+              outputPath: "./",
             },
           },
         ],
