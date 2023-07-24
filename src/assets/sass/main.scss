@@ -29,6 +29,10 @@ a {
   }
 }
 
+.clickable:hover {
+  cursor: pointer;
+}
+
 @keyframes pulse {
   0% {
     transform: scale(0.9);

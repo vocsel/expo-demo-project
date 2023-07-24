@@ -45,8 +45,8 @@ let saveItemPositionInterval;
 const InfoBox = () => {
   const [activeItem, setActiveItem] = useActiveItem();
   const [items, setItems] = useItems();
-  const [mode, __] = useMode();
-  const [vocselApi, ___] = useVocselApi();
+  const [mode] = useMode();
+  const [vocselApi] = useVocselApi();
   const [selectedBackground, setSelectedBackground] = useState("#808080");
 
   const setRendererBackground = (rgb) => {

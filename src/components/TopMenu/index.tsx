@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import AddObjectModal from "components/AddObjectModal";
 import Text from "components/Text";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
 import {
   useItems, useMode, useVocselApi, useActiveItem,
 } from "store/store";
@@ -23,7 +24,7 @@ const StyledGrid = styled(Grid)`
 const TopMenu = () => {
   const [mode, setMode] = useMode();
   const [addObjectModalVisible, setAddObjectModalVisible] = useState(false);
-  const [vocselApi, _] = useVocselApi();
+  const [vocselApi] = useVocselApi();
   const [items] = useItems();
   const [activeItem] = useActiveItem();
 
@@ -55,24 +56,14 @@ const TopMenu = () => {
                   </Button>
 
                   <Button
-                    sx={{ mr: 1 }}
-                    variant="outlined"
-                    color="error"
-                    onClick={async () => {
-                      (await vocselApi?.db.document("item"))?.delete({ id: items[activeItem].id }).then(() => window.location.reload());
-                    }}
-                  >
-                    Delete Item
-                  </Button>
-
-                  <Button
                     variant="outlined"
                     color="error"
                     onClick={async () => {
                       (await vocselApi?.db.document("item"))?.flush().then(() => window.location.reload());
                     }}
+                    endIcon={<DeleteForeverIcon />}
                   >
-                    Clear All
+                    Delete all
                   </Button>
                 </Box>
               ) : null

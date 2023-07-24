@@ -10,7 +10,7 @@ const Price = ({ price }) => {
   const [mode] = useMode();
   const [items] = useItems();
   const [activeItem] = useActiveItem();
-  const [vocselApi, _] = useVocselApi();
+  const [vocselApi] = useVocselApi();
 
   const edit = () => {
     alert(items[activeItem].priceUSD);
@@ -36,7 +36,7 @@ const Price = ({ price }) => {
       </Box>
 
       {
-       hasAccessRights(vocselApi?.accessRights) && mode === "preview" ? (
+       hasAccessRights(vocselApi?.accessRights) && mode === "edit" ? (
          <Button
            variant="contained"
            fullWidth

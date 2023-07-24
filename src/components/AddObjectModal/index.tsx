@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import CoreModal from "components/CoreModal";
 import styled from "@emotion/styled";
 import {
-  Box, Alert, Button, TextField, FormHelperText, Divider, Switch,
+  Box, Alert, Button, TextField, FormHelperText, Divider, Switch, Grid,
 } from "@mui/material";
 import PhotoCamera from "@mui/icons-material/PhotoCamera";
 import { useFormik } from "formik";
@@ -29,10 +29,7 @@ const AddObjectModal = ({ open, onClose }) => {
   const [error, setError] = useState(null);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [enablePrice, setEnablePrice] = useState(false);
-  const [vocselApi, _] = useVocselApi();
-  const [items, setItems] = useItems();
-  const [__, setActiveItem] = useActiveItem();
-  const [___, setIsInitialized] = useIsInitialized();
+  const [vocselApi] = useVocselApi();
 
   const onSubmit = async ({
     title,
@@ -95,115 +92,167 @@ const AddObjectModal = ({ open, onClose }) => {
   }, [open]);
 
   return (
-    <CoreModal title="Upload Item" open={visible} onClose={onClose}>
+    <CoreModal title="Upload Item" open={visible} onClose={onClose} sizes={{ lg: "80%" }}>
       <form onSubmit={formik.handleSubmit}>
-        <div>
-          <TextField
-            fullWidth
-            id="title"
-            name="title"
-            label="Title of an item..."
-            variant="outlined"
-            onChange={formik.handleChange}
-            autoComplete="off"
-          />
-          {formik.errors.title ? <FormHelperText error>{formik.errors.title}</FormHelperText> : null}
-        </div>
+        <Grid container spacing={4}>
+          <Grid item xs={12} sm={8} md={5}>
+            <div>
+              <TextField
+                fullWidth
+                id="title"
+                name="title"
+                label="Title of an item..."
+                variant="outlined"
+                onChange={formik.handleChange}
+                autoComplete="off"
+              />
+              {formik.errors.title ? <FormHelperText error>{formik.errors.title}</FormHelperText> : null}
+            </div>
 
-        <br />
+            <br />
 
-        <Box sx={{ display: "flex", alignItems: "center" }}>
-          <Text size="sm">Enable price</Text>
-          <Switch
-            checked={enablePrice}
-            onClick={() => setEnablePrice(!enablePrice)}
-          />
-        </Box>
+            <Box sx={{ display: "flex", alignItems: "center" }}>
+              <Text size="sm">Include price</Text>
+              <Switch
+                checked={enablePrice}
+                onClick={() => setEnablePrice(!enablePrice)}
+              />
+            </Box>
 
-        <br />
+            <br />
 
-        {
-          enablePrice ? (
-            <>
-              <div>
-                <TextField
-                  fullWidth
-                  id="priceUSD"
-                  name="priceUSD"
-                  label="Price in USD"
-                  type="number"
-                  variant="outlined"
-                  onChange={formik.handleChange}
-                  autoComplete="off"
-                />
-                {formik.errors.priceUSD ? <FormHelperText error>{formik.errors.priceUSD}</FormHelperText> : null}
-              </div>
+            {
+              enablePrice ? (
+                <>
+                  <div>
+                    <TextField
+                      fullWidth
+                      id="priceUSD"
+                      name="priceUSD"
+                      label="Price in USD"
+                      type="number"
+                      variant="outlined"
+                      onChange={formik.handleChange}
+                      autoComplete="off"
+                    />
+                    {formik.errors.priceUSD ? <FormHelperText error>{formik.errors.priceUSD}</FormHelperText> : null}
+                  </div>
 
-              <br />
-            </>
-          ) : null
-        }
+                  <br />
+                </>
+              ) : null
+            }
 
-        <div>
-          <TextField
-            fullWidth
-            multiline
-            id="description"
-            name="description"
-            label="Description of an item"
-            variant="outlined"
-            onChange={formik.handleChange}
-            autoComplete="off"
-          />
-          {formik.errors.description ? <FormHelperText error>{formik.errors.description}</FormHelperText> : null}
-        </div>
-
-        <br />
-
-        <Alert severity="info">
-          Supported image formats (
-          <b>.pmg</b>
-          ,
-          {" "}
-          <b>.jpeg</b>
-          ,
-          {" "}
-          <b>.bmp</b>
-          ) and 3d formats (
-          <b>.glTF</b>
-          ,
-          {" "}
-          <b>.glb</b>
-          )!
-        </Alert>
-
-        <br />
-
-        <Box sx={{ display: "flex", justifyContent: "center" }}>
-          <label htmlFor="icon-button-file">
-            <Input accept="image/*,.gltf,.glb,.obj,.fbx" id="icon-button-file" type="file" onChange={onUploadFiles} />
-
-            <Button variant="contained" component="span" endIcon={<PhotoCamera />}>
-              Click to upload a file
-            </Button>
-          </label>
-        </Box>
-
-        {
-          uploadedFile ? (
-            <>
-              <br />
-
-              <Divider />
+            <div>
+              <TextField
+                fullWidth
+                multiline
+                rows={5}
+                id="description"
+                name="description"
+                label="Description of an item (Optional)"
+                variant="outlined"
+                onChange={formik.handleChange}
+                autoComplete="off"
+              />
+              {formik.errors.description ? <FormHelperText error>{formik.errors.description}</FormHelperText> : null}
+            </div>
+          </Grid>
+          <Grid item xs={12} sm={8} md={7}>
+            <Text>Upload an Object's wallpaper</Text>
+            <Box sx={{ border: "1px dashed rgb(1, 67, 97)", borderRadius: "10px", p: 1 }}>
+              <Alert severity="info">
+                Supported image formats (
+                <b>.pmg</b>
+                ,
+                {" "}
+                <b>.jpeg</b>
+                ,
+                {" "}
+                <b>.bmp</b>
+                )!
+              </Alert>
 
               <br />
 
-              <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                <Button type="submit">Submit</Button>
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <label htmlFor="icon-button-file">
+                  <Input accept="image/*" id="icon-button-file" type="file" onChange={onUploadFiles} />
+
+                  <Button component="span" endIcon={<PhotoCamera />}>
+                    Click to upload a wallpaper
+                  </Button>
+                </label>
               </Box>
-            </>
-          ) : null
-        }
+
+              {
+                uploadedFile ? (
+                  <>
+                    <br />
+
+                    <Divider />
+
+                    <br />
+
+                    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                      <Button type="submit">Submit</Button>
+                    </Box>
+                  </>
+                ) : null
+              }
+            </Box>
+
+            <br />
+
+            <Text>Upload an Object to represent</Text>
+            <Box sx={{ border: "1px dashed rgb(1, 67, 97)", borderRadius: "10px", p: 1 }}>
+              <Alert severity="info">
+                Supported image formats (
+                <b>.pmg</b>
+                ,
+                {" "}
+                <b>.jpeg</b>
+                ,
+                {" "}
+                <b>.bmp</b>
+                ) and 3d formats (
+                <b>.glTF</b>
+                ,
+                {" "}
+                <b>.glb</b>
+                )!
+              </Alert>
+
+              <br />
+
+              <Box sx={{ display: "flex", justifyContent: "center" }}>
+                <label htmlFor="icon-button-file">
+                  <Input accept="image/*,.gltf,.glb,.obj,.fbx" id="icon-button-file" type="file" onChange={onUploadFiles} />
+
+                  <Button component="span" endIcon={<PhotoCamera />}>
+                    Click to upload a file
+                  </Button>
+                </label>
+              </Box>
+
+              {
+                uploadedFile ? (
+                  <>
+                    <br />
+
+                    <Divider />
+
+                    <br />
+
+                    <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
+                      <Button type="submit">Submit</Button>
+                    </Box>
+                  </>
+                ) : null
+              }
+            </Box>
+          </Grid>
+        </Grid>
 
         {error ? (
           <>

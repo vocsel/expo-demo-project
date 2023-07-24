@@ -22,11 +22,11 @@ const drawerWidth = 400;
 
 export default function ClippedDrawer() {
   const [isInitialized] = useIsInitialized();
-  const [vocselApi, _] = useVocselApi();
-  const [mode, __] = useMode();
+  const [vocselApi] = useVocselApi();
+  const [mode] = useMode();
   const [title, setTitle] = useState<string>("...");
-  const [activeItem, ___] = useActiveItem();
-  const [items, ____] = useItems();
+  const [activeItem] = useActiveItem();
+  const [items] = useItems();
 
   useEffect(() => {
     async function init() {

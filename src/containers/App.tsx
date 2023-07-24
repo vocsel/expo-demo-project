@@ -6,6 +6,7 @@ import { Vocsel } from "vocsel-api";
 import { File } from "vocsel-api/dist/objects/file";
 import * as qs from "qs";
 import Aside from "components/Aside";
+import Dashboard from "components/Dashboard";
 
 const Wrapper = styled.div`
   position: relative;
@@ -56,7 +57,8 @@ const App = () => {
 
   return (
     <Wrapper>
-      <Aside />
+      {/* <Aside /> */}
+      <Dashboard />
     </Wrapper>
   );
 };

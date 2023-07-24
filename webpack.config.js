@@ -8,6 +8,7 @@ const path = require("path");
 const WebpackBundleAnalyzer = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const MomentLocalesPlugin = require("moment-locales-webpack-plugin");
 const TerserPlugin = require("terser-webpack-plugin");
+const CopyPlugin = require("copy-webpack-plugin");
 
 const mode = process.env.NODE_ENV || "development";
 const openBundleAnalyzer = process.env.OPEN_BUNDLE_ANALYZER;
@@ -18,13 +19,13 @@ function plugins() {
       template: path.resolve(__dirname, "src", "index.html"),
     }),
     new webpack.HotModuleReplacementPlugin(),
-    // new CopyPlugin({
-    //   patterns: [
-    //     { from: path.resolve(__dirname, "src/assets/icons"), to: path.resolve(__dirname, "__dist__/assets/icons") },
-    //     { from: path.resolve(__dirname, "src/assets/images"), to: path.resolve(__dirname, "__dist__/assets/images") },
-    //     { from: path.resolve(__dirname, "src/assets/meshes"), to: path.resolve(__dirname, "__dist__") },
-    //   ],
-    // }),
+    new CopyPlugin({
+      patterns: [
+        // { from: path.resolve(__dirname, "src/assets/icons"), to: path.resolve(__dirname, "__dist__/assets/icons") },
+        { from: path.resolve(__dirname, "src/assets/images"), to: path.resolve(__dirname, "__dist__/assets/images") },
+        // { from: path.resolve(__dirname, "src/assets/meshes"), to: path.resolve(__dirname, "__dist__") },
+      ],
+    }),
     new MomentLocalesPlugin({
       localesToKeep: ["es-us", "ru"],
     }),
